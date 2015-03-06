@@ -64,12 +64,11 @@ body {
 
 }
 .current-weather
-{    margin: auto;
+{  
+  margin: auto;
   position: relative;
-  top: 35%;
-  right: 2%;
-  text-align: center;
-  left: 2%;
+  top: 50%;
+  transform: translateY(-50%);
   }
 .weather-temp
 {
@@ -105,10 +104,11 @@ font-size:3em;
 .weekly-weather{
   margin: auto;
   position: relative;
-  top: 22%;
+  top: 50%;
+  transform: translateY(-50%);
   text-align: center;
-  padding-left: 2em;
-}
+
+  }
 
 .btn-container{
   width: 96%;
@@ -123,9 +123,11 @@ font-size:3em;
     position:relative;
 }
 .btn-txt{
-      font-weight: bold;
-  line-height: 5em;
+  font-weight: bold;
   text-transform: uppercase;
+  position: relative;
+  top: 40%;
+  transform: translateY(-40%);
 }
 
 .weather-container{
@@ -267,6 +269,7 @@ color:#000;
 .boxer {
    display: table;
    border-collapse: collapse;
+   margin: auto;
 }
  
 .boxer .box-row {

@@ -7,25 +7,26 @@
  * Controller of the weatherAppApp
  */
 angular.module('weatherAppApp').controller('MainCtrl', function($scope,
-    $location, $http) {
+    $location, $http,weatherApi) {
+
+
+
+
     $scope.date = new Date();
     $scope.location = '';
     $scope.weatherToday = true;
     $scope.daysWeather = false;
     $scope.searchWeather = false;
+
+
     var onSuccess = function(position) {
-        $scope.location="";
-       // console.log(position);
-        var date = new Date();
-        var longitude = position.coords.longitude;
-        var latitude = position.coords.latitude;
-        $scope.weatherApi =
-            'https://api.forecast.io/forecast/92b81d3f4f5f933c35d4f3d58e14bc0c/';
-        $http.jsonp($scope.weatherApi + latitude + ',' + longitude +
-            '?callback=JSON_CALLBACK&si=temperature').success(
-            function(weather, status, headers, config) {
-                //console.log(weather);
-                var skycons = new Skycons({
+    $scope.location = '';
+     var longitude = position.coords.longitude;
+     var latitude = position.coords.latitude;
+
+     weatherApi.getWeather(longitude,latitude).success(function(weather){
+
+        var skycons = new Skycons({
                     'color': 'white'
                 });
                 skycons.add('js-weather-icon', weather.currently
@@ -48,15 +49,16 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
                     .apparentTemperature);
                 $scope.summary = weather.currently.summary;
                 $scope.weeklyWeather = weather.daily.data;
-            }).error(function(weather, status, headers, config) {
+
+        console.log (weather);
+
+
+    }).error(function(weather, status, headers, config) {
             console.log('ERR: Could not get Weather');
         });
-        //Get current city from longitude and latitude
-        $scope.cityApi =
-            'http://maps.googleapis.com/maps/api/geocode/json?';
-        $http.get($scope.cityApi + 'latlng=' + latitude + ',' +
-            longitude + '&callback=JSON_CALLBACK').success(
-            function(city, status, headers, config) {
+
+
+     weatherApi.getCity(longitude,latitude).success(function(city) {
                 var result = city.results[0].address_components;
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].types[0] === 'locality') {
@@ -66,18 +68,27 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
                         'administrative_area_level_1') {
                         $scope.location += ' ' + result[i].short_name;
                     }
-                }
-            }).error(function(city, status, headers, config) {
+                }}).error(function(city, status, headers, config) {
             console.log('ERR: Could not get city');
         });
-    };
+ 
     // onError Callback receives a PositionError object
-    function onError(error) {
+   
+
+
+       }
+
+
+        function onError(error) {
         console.log('code: ' + error.code + '\n' + 'message: ' +
             error.message + '\n');
-    }
+
+
+           }
+
     $scope.getLocation = function(){
         $scope.location="";
+
         navigator.geolocation.getCurrentPosition(onSuccess, onError)
     }
 
@@ -127,37 +138,18 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
 
             if ($scope.cityName.value != "")
             {
+                 weatherApi.getLongLat($scope.cityName).success(function(cityPosition) {
+                    $scope.cityLongLat=cityPosition.results[0].geometry.location;
+                    var positionCity = {};
+                    positionCity["coords"] = { longitude: $scope.cityLongLat.lng, latitude:$scope.cityLongLat.lat };                 
+                    onSuccess(positionCity);
+               
+               })
+                 .error(function(cityPosition, status, headers, config) {console.log('ERR: Could not get city');
 
-            $scope.cityLocation ='http://maps.googleapis.com/maps/api/geocode/json?';
-             $http.get($scope.cityLocation + 'address=' + $scope.cityName.value +'&callback=JSON_CALLBACK')
-             .success(function(cityPosition,status, headers, config) {
-                        $scope.cityLongLat=cityPosition.results[0].geometry.location;
-                       // console.log($scope.cityLongLat);
-
-                        var positionCity = {};
-                        positionCity["coords"] = { longitude: $scope.cityLongLat.lng, latitude:$scope.cityLongLat.lat };
-                      
-                
-
-                       onSuccess(positionCity);
-
-
-
-            })
-             .error(function(cityPosition, status, headers, config) {
-        console.log('ERR: Could not get city');
-            });
-
-            }
-
-            else
-            {
-               $scope.cityName.style.border = "1px solid red";
-            }
-
-            
-
-    }
+             });
+   
+             }}
 
 
 $scope.getLocation();

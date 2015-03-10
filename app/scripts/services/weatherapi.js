@@ -41,7 +41,9 @@ angular.module('weatherAppApp')
         return $http.get(cityApi + 'latlng=' + latitude + ',' +
             longitude + '&callback=JSON_CALLBACK').success(function(city){
 
-            })
+            }).error(function(city, status, headers, config) {
+            console.log('ERR: Could not get city');
+        });
       },
 
       getLongLat:function(city){

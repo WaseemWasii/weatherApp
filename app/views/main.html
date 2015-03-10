@@ -51,61 +51,16 @@
 
             <div class="weekly-weather">
               
-                     <div class="boxer dayWeather">
+                     <div class="boxer dayWeather" ng-repeat="Day in DailyData | limitTo: 7" weather-directive="ngRepeatFinished">
 
                         <div class="box-row">
-                            <div class="box">{{Day[0]}}</div>
-                            <div class="box"><canvas class="weather-icon" height="32" id="day0-icon" width="32"></canvas></div>
-                            <div class="box">Max: {{weeklyWeather[0].temperatureMax}}°C </div>
-                            <div class="box"> Min:{{weeklyWeather[0].temperatureMin}}°C</div>
+                            <div class="box" ><span>{{Day.day}}</span></div>
+                            <div class="box"><canvas class="weather-icon" height="32" id="{{Day.day}}-icon" width="32"></canvas></div>
+                            <div class="box">Max: {{Day.temperatureMax}}°C </div>
+                            <div class="box"> Min:{{Day.temperatureMin}}°C</div>
                         </div>
 
-                        <div class="box-row">
-                            <div class="box">{{Day[1]}}</div>
-                            <div class="box"><canvas class="weather-icon" height="32" id="day1-icon" width="32"></canvas></div>
-                            <div class="box">Max: {{weeklyWeather[1].temperatureMax}}°C </div>
-                            <div class="box"> Min:{{weeklyWeather[1].temperatureMin}}°C</div>
-                        </div>
-
-
-                        <div class="box-row">
-                            <div class="box">{{Day[2]}}</div>
-                            <div class="box"><canvas class="weather-icon" height="32" id="day2-icon" width="32"></canvas></div>
-                            <div class="box">Max: {{weeklyWeather[2].temperatureMax}}°C </div>
-                            <div class="box"> Min:{{weeklyWeather[2].temperatureMin}}°C</div>
-                        </div>
-
-
-                        <div class="box-row">
-                            <div class="box">{{Day[3]}}</div>
-                            <div class="box"><canvas class="weather-icon" height="32" id="day3-icon" width="32"></canvas></div>
-                            <div class="box">Max: {{weeklyWeather[3].temperatureMax}}°C </div>
-                            <div class="box"> Min:{{weeklyWeather[3].temperatureMin}}°C</div>
-                        </div>
-
-
-                        <div class="box-row">
-                            <div class="box">{{Day[4]}}</div>
-                            <div class="box"><canvas class="weather-icon" height="32" id="day4-icon" width="32"></canvas></div>
-                            <div class="box">Max: {{weeklyWeather[4].temperatureMax}}°C </div>
-                            <div class="box"> Min:{{weeklyWeather[4].temperatureMin}}°C</div>
-                        </div>
-
-
-                        <div class="box-row">
-                            <div class="box">{{Day[5]}}</div>
-                            <div class="box"><canvas class="weather-icon" height="32" id="day5-icon" width="32"></canvas></div>
-                            <div class="box">Max: {{weeklyWeather[5].temperatureMax}}°C </div>
-                            <div class="box"> Min:{{weeklyWeather[5].temperatureMin}}°C</div>
-                        </div>
-
-
-                        <div class="box-row">
-                            <div class="box">{{Day[6]}}</div>
-                            <div class="box"><canvas class="weather-icon" height="32" id="day6-icon" width="32"></canvas></div>
-                            <div class="box">Max: {{weeklyWeather[6].temperatureMax}}°C </div>
-                            <div class="box"> Min:{{weeklyWeather[6].temperatureMin}}°C</div>
-                        </div>
+                        
                        
                     </div>
   

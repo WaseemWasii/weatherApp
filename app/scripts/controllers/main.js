@@ -26,22 +26,9 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
 
      weatherApi.getWeather(longitude,latitude).success(function(weather){
 
-        var skycons = new Skycons({
-                    'color': 'white'
-                });
-                skycons.add('js-weather-icon', weather.currently
-                    .icon);
-                skycons.add('day0-icon', weather.daily.data[0].icon);
-                skycons.add('day1-icon', weather.daily.data[1].icon);
-                skycons.add('day2-icon', weather.daily.data[2].icon);
-                skycons.add('day3-icon', weather.daily.data[3].icon);
-                skycons.add('day4-icon', weather.daily.data[4].icon);
-                skycons.add('day5-icon', weather.daily.data[5].icon);
-                skycons.add('day6-icon', weather.daily.data[6].icon);
-                skycons.add('day7-icon', weather.daily.data[7].icon);
-                skycons.play();
+       
                 $scope.bgImage= 'url("./images/'+ weather.currently.icon+'.jpg")'  ;
-                console.log($scope.bgImage);
+        
                 
                 $scope.currentTemperature = Math.round(weather.currently
                     .temperature);
@@ -50,7 +37,45 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
                 $scope.summary = weather.currently.summary;
                 $scope.weeklyWeather = weather.daily.data;
 
-        console.log (weather);
+       
+
+                 for (var i=0; i < $scope.weeklyWeather.length; i++) {
+
+                    for (var i=0; i<$scope.Days.length;i++){
+                        weather.daily.data[i].day = $scope.Days[i];
+                    }
+                          };
+                          var skycons = new Skycons({
+                    'color': 'white'
+                });
+
+
+                skycons.add('js-weather-icon', weather.currently.icon);
+                skycons.play();
+          
+
+                 $scope.addIcons= function(){
+
+                     
+                    skycons.add(weather.daily.data[0].day+'-icon', weather.daily.data[0].icon);
+                    skycons.add(weather.daily.data[1].day+'-icon', weather.daily.data[1].icon);
+                    skycons.add(weather.daily.data[2].day+'-icon', weather.daily.data[2].icon);
+                    skycons.add(weather.daily.data[3].day+'-icon', weather.daily.data[3].icon);
+                    skycons.add(weather.daily.data[4].day+'-icon', weather.daily.data[4].icon);
+                    skycons.add(weather.daily.data[5].day+'-icon', weather.daily.data[5].icon);
+                    skycons.add(weather.daily.data[6].day+'-icon', weather.daily.data[6].icon);
+                    skycons.add(weather.daily.data[7].day+'-icon', weather.daily.data[7].icon);
+                    skycons.play();
+            
+                 }
+
+
+                $scope.DailyData  =  $scope.weeklyWeather;
+              
+
+
+
+
 
 
     }).error(function(weather, status, headers, config) {
@@ -59,6 +84,8 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
 
 
      weatherApi.getCity(longitude,latitude).success(function(city) {
+
+
                 var result = city.results[0].address_components;
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].types[0] === 'locality') {
@@ -115,21 +142,20 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
         return weekdays[dayIndex];
     }
     var startDate = new Date();
-    $scope.Day = $scope.getDays(startDate, 6);
+    $scope.Days = $scope.getDays(startDate, 6);
+
+
+
     $scope.showToday = function() {
         $scope.weatherToday = true;
         $scope.daysWeather = false;
         $scope.searchWeather = false;
     }
     $scope.showWeek = function() {
+
         $scope.weatherToday = false;
         $scope.daysWeather = true;
         $scope.searchWeather = false;
-    }
-    $scope.showSearch = function() {
-        $scope.weatherToday = false;
-        $scope.daysWeather = false;
-        $scope.searchWeather = true;
     }
 
     $scope.getCityPosition= function(){
@@ -151,6 +177,9 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
    
              }}
 
+$scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+    $scope.addIcons();
+});
 
 $scope.getLocation();
 

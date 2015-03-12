@@ -1,5 +1,5 @@
     <div class="container" ng-style="{'background': bgImage}" >
-       <div class="header">       <h3> Weather</h3>    </div>
+       <div class="header">       <h4> Weather</h4>    </div>
 
 
 
@@ -13,13 +13,27 @@
             <li ng-click="getLocation()"class="location-btn" >
                 <button type="submit">
                 <span class="fa fa-location-arrow"></span>
+             
                 </button>
              
             </li>
 
+            <li class="select-fav" >
+
+           
+                  <select ng-init="selectedItem = 'Recent'" id="selectFav" ng-model="selectedItem" ng-change="selectFavCity(selectedItem)" ng-options="city.name for city in favCities">
+
+                     <option value="" disabled>Recent </option>
+                 
+                
+                  </select>
+            
+              
+            </li>
+
             <li class="search-box">
               
-              <span class="search-btn" ><button id="btn-search" type="submit"><span ng-click="getCityPosition()" class="fa fa-search "> </span></button></span>
+              <span class="search-btn" ><button id="btn-search" type="submit"  ng-click="getCityPosition()"><span class="fa fa-search "> </span></button></span>
 
               <span class="search-bar">  <input id="search" placeholder="Enter City Name " type="search"></span>
             </li>

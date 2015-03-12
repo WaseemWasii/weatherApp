@@ -326,7 +326,7 @@ color:#000;
 }
 
 
-.search-box{  width: 90%;
+.search-box{  width: 70%;
   display: block;
   float: right!important;}
 
@@ -344,3 +344,15 @@ color:#000;
 
 
 .location-btn{width:10%; float:left;}
+
+
+.select-fav{width:20%; float:left; color:black;
+#selectFav{  background: #fff;
+  color: #000;
+  width: 100%;
+  display: block;
+  padding: .5em 1em;}
+}
+#nodisplayoption{
+  display:none;
+}

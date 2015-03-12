@@ -6,17 +6,18 @@
  * # MainCtrl
  * Controller of the weatherAppApp
  */
-angular.module('weatherAppApp').controller('MainCtrl', function($scope,
-    $location, $http,weatherApi) {
+angular.module('weatherAppApp').controller('MainCtrl', function($scope,$location,$localStorage, $http,weatherApi) {
 
-
-
-
+    $scope.$storage= $localStorage;
     $scope.date = new Date();
     $scope.location = '';
     $scope.weatherToday = true;
     $scope.daysWeather = false;
     $scope.searchWeather = false;
+    $scope.selectedItem = "Recent Cities";
+
+
+
 
 
     var onSuccess = function(position) {
@@ -83,8 +84,8 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
         });
 
 
-     weatherApi.getCity(longitude,latitude).success(function(city) {
-
+     weatherApi.getCity(longitude,latitude)
+     .success(function(city) {
 
                 var result = city.results[0].address_components;
                 for (var i = 0; i < result.length; i++) {
@@ -95,7 +96,9 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
                         'administrative_area_level_1') {
                         $scope.location += ' ' + result[i].short_name;
                     }
-                }}).error(function(city, status, headers, config) {
+                }})
+
+     .error(function(city, status, headers, config) {
             console.log('ERR: Could not get city');
         });
  
@@ -158,6 +161,43 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
         $scope.searchWeather = false;
     }
 
+    
+     if ($localStorage.cities == undefined)
+    {
+        $localStorage.cities= [];
+    }
+
+
+    $scope.favCities= $localStorage.cities;
+    
+        
+     console.log($scope.favCities[0].name);
+
+
+// Sends Location data from Recent Search History
+
+     $scope.selectFavCity=function(value){
+        console.log(value);
+        var positionCity={};
+        positionCity["coords"] = { longitude: value.longitude, latitude:value.latitude }; 
+        onSuccess(positionCity);
+     }
+     
+      
+ 
+    
+//updating LocalStorage for Future Data
+  
+    $scope.addfavCities =function(city){  
+
+     $localStorage.cities.push(city);
+    
+
+    }
+    
+
+// Get City Position
+
     $scope.getCityPosition= function(){
 
             $scope.cityName = document.getElementById('search');
@@ -167,8 +207,20 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,
                  weatherApi.getLongLat($scope.cityName).success(function(cityPosition) {
                     $scope.cityLongLat=cityPosition.results[0].geometry.location;
                     var positionCity = {};
-                    positionCity["coords"] = { longitude: $scope.cityLongLat.lng, latitude:$scope.cityLongLat.lat };                 
+
+
+                    positionCity["coords"] = { longitude: $scope.cityLongLat.lng, latitude:$scope.cityLongLat.lat }; 
+
+
+                   //sending data to Local Storage Function
+
+                    var city ={ name:$scope.cityName.value,longitude: $scope.cityLongLat.lng,latitude:$scope.cityLongLat.lat};
+                    
+                     $scope.addfavCities(city); 
+                    
                     onSuccess(positionCity);
+
+                    
                
                })
                  .error(function(cityPosition, status, headers, config) {console.log('ERR: Could not get city');

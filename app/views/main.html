@@ -20,15 +20,14 @@
 
             <li class="select-fav" >
 
-           
-                  <select ng-init="selectedItem = 'Recent'" id="selectFav" ng-model="selectedItem" ng-change="selectFavCity(selectedItem)" ng-options="city.name for city in favCities">
+          
+                  <select ng-init="selectedItem = favorite" id="selectFav" ng-model="selectedItem" ng-change="selectFavCity(selectedItem)" ng-options="city.name for city in favCities"> 
 
-                     <option value="" disabled>Recent </option>
-                 
+                     <option value="" disabled >Recent</option>
+            
                 
                   </select>
-            
-              
+           
             </li>
 
             <li class="search-box">

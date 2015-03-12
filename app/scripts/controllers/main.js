@@ -170,7 +170,7 @@ angular.module('weatherAppApp').controller('MainCtrl', function($scope,$location
 
     $scope.favCities= $localStorage.cities;
     
-        
+    $scope.favorite='<i class="fa fa-heart"></i>';  
      console.log($scope.favCities[0].name);
 
 
